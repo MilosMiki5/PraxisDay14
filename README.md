@@ -51,16 +51,16 @@ sobald eine Änderung es wieder bricht, verschwindet der Haken. Du musst hier
 nichts von Hand pflegen, beim nächsten Push wird die Liste überschrieben.
 
 <!-- c50:progress -->
-**Fortschritt: 0 / 9 Kriterien erfüllt** ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ — Stand: 2026-10-28 07:56 UTC.
+**Fortschritt: 5 / 9 Kriterien erfüllt** 🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ — Stand: 2026-10-28 08:02 UTC.
 <!-- /c50:progress -->
 
 - [ ] ⬜ Anwendung vorhanden (app.py und requirements.txt im Wurzel-Verzeichnis)
 - [ ] ⬜ Dockerfile vorhanden (Wurzel-Verzeichnis)
-- [ ] ⬜ Workflow vorhanden (.github/workflows/)
-- [ ] ⬜ Workflow startet bei jedem Push (on: push)
-- [ ] ⬜ Container-Image wird im Workflow gebaut
-- [ ] ⬜ Gebautes Image steht für den Test bereit (load: true oder docker build)
-- [ ] ⬜ Container wird gestartet und per HTTP getestet (docker run + curl)
+- [x] ✅ Workflow vorhanden (.github/workflows/)
+- [x] ✅ Workflow startet bei jedem Push (on: push)
+- [x] ✅ Container-Image wird im Workflow gebaut
+- [x] ✅ Gebautes Image steht für den Test bereit (load: true oder docker build)
+- [x] ✅ Container wird gestartet und per HTTP getestet (docker run + curl)
 - [ ] ⬜ Doku: DOKUMENTATION.md vorhanden
 - [ ] ⬜ Doku: DOKUMENTATION.md hat ausreichend Inhalt (mind. 80 Wörter)
 
