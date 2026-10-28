@@ -1,0 +1,75 @@
+name: 🎓 Classroom Autograding
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  checks: write
+  # write: der Job hakt die erfüllten Abnahmekriterien im README ab und
+  # committet das Ergebnis zurück.
+  contents: write
+
+jobs:
+  run-autograding-tests:
+    name: Abnahmekriterien prüfen
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Ein einziger Lauf von grade.sh; er schreibt jedes Kriterium als
+      # PASS/FAIL-Zeile nach $CLASSROOM_RESULTS. Aus dieser Datei speisen sich
+      # danach BEIDE Folgeschritte: die Punkte und die Haken im README.
+      # '|| true' — ein unerfuelltes Kriterium beendet grade.sh mit 1; rot
+      # macht den Job der Reporter, nicht dieser Schritt.
+      - name: Abnahmekriterien
+        id: abnahmekriterien
+        env:
+          CLASSROOM_RESULTS: ${{ runner.temp }}/classroom-results.tsv
+        run: |
+          chmod +x .github/classroom/grade.sh .github/classroom/checks/*.sh
+          bash .github/classroom/grade.sh || true
+          python3 .github/classroom/report_score.py
+
+      # Zeigt jedes Kriterium einzeln und vergibt Teilpunkte: die Punktzahl
+      # entspricht dem Anteil der erfuellten Kriterien. Der Job wird rot,
+      # solange noch eines offen ist.
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          ABNAHMEKRITERIEN_RESULTS: "${{ steps.abnahmekriterien.outputs.result }}"
+        with:
+          runners: abnahmekriterien
+
+      # Hakt jedes erfüllte Kriterium im README ab und entfernt den Haken
+      # wieder, sobald eine Änderung das Kriterium bricht. Der Commit trägt
+      # [skip ci], damit er keinen weiteren Workflow-Lauf auslöst.
+      # Läuft bewusst auch dann, wenn die Bewertung rot ist (if: always()) —
+      # sonst würde der Fortschritt nur bei einem perfekten Lauf sichtbar.
+      - name: Abnahmekriterien im README abhaken
+        if: always() && github.event_name == 'push'
+        continue-on-error: true
+        env:
+          CLASSROOM_RESULTS: ${{ runner.temp }}/classroom-results.tsv
+        run: |
+          python3 .github/classroom/update_readme.py && status=0 || status=$?
+
+          # 10 = README wurde geändert, 0 = bereits aktuell.
+          if [ "${status}" -ne 10 ]; then
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "docs: Abnahmekriterien im README aktualisiert [skip ci]"
+          git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
