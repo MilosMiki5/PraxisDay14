@@ -51,7 +51,7 @@ sobald eine Änderung es wieder bricht, verschwindet der Haken. Du musst hier
 nichts von Hand pflegen, beim nächsten Push wird die Liste überschrieben.
 
 <!-- c50:progress -->
-**Fortschritt: 7 / 9 Kriterien erfüllt** 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜ — Stand: 2026-10-28 08:36 UTC.
+✅ **Alle 9 Kriterien erfüllt** 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 — Stand: 2026-10-28 08:47 UTC.
 <!-- /c50:progress -->
 
 - [x] ✅ Anwendung vorhanden (app.py und requirements.txt im Wurzel-Verzeichnis)
@@ -61,8 +61,8 @@ nichts von Hand pflegen, beim nächsten Push wird die Liste überschrieben.
 - [x] ✅ Container-Image wird im Workflow gebaut
 - [x] ✅ Gebautes Image steht für den Test bereit (load: true oder docker build)
 - [x] ✅ Container wird gestartet und per HTTP getestet (docker run + curl)
-- [ ] ⬜ Doku: DOKUMENTATION.md vorhanden
-- [ ] ⬜ Doku: DOKUMENTATION.md hat ausreichend Inhalt (mind. 80 Wörter)
+- [x] ✅ Doku: DOKUMENTATION.md vorhanden
+- [x] ✅ Doku: DOKUMENTATION.md hat ausreichend Inhalt (mind. 80 Wörter)
 
 Zusätzlich manuell abgenommen (nicht automatisch geprüft):
 
